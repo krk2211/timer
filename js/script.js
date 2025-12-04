@@ -13,15 +13,27 @@ function initCountdown() {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
-        document.getElementById('days').textContent = String(days).padStart(3, '0');
-        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        // Animate number changes
+        animateValue('days', String(days).padStart(3, '0'));
+        animateValue('hours', String(hours).padStart(2, '0'));
+        animateValue('minutes', String(minutes).padStart(2, '0'));
+        animateValue('seconds', String(seconds).padStart(2, '0'));
         
         if (distance < 0) {
             clearInterval(countdownInterval);
             document.querySelector('.countdown-container').innerHTML = 
-                '<div class="countdown-message">The Big Day is Here! 💍</div>';
+                '<div class="countdown-message" style="font-family: var(--font-serif); font-size: 2rem; color: var(--gold);">The Big Day is Here! 💍</div>';
+        }
+    }
+    
+    function animateValue(id, newValue) {
+        const el = document.getElementById(id);
+        if (el && el.textContent !== newValue) {
+            el.style.transform = 'scale(1.1)';
+            el.textContent = newValue;
+            setTimeout(() => {
+                el.style.transform = 'scale(1)';
+            }, 100);
         }
     }
     
@@ -30,29 +42,111 @@ function initCountdown() {
 }
 
 // ==========================================
-// FLOATING PARTICLES
+// FLOATING PARTICLES - ENHANCED
 // ==========================================
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    const particleCount = window.innerWidth > 768 ? 50 : 30;
+    if (!particlesContainer) return;
+    
+    const particleCount = window.innerWidth > 768 ? 35 : 18;
+    const colors = ['gold', 'rose', 'gold', 'gold', 'rose']; // More gold particles
     
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        particle.classList.add('particle');
+        particle.classList.add('particle', colors[i % colors.length]);
         
-        const size = Math.random() * 60 + 20;
-        const startX = Math.random() * window.innerWidth;
-        const duration = Math.random() * 15 + 10;
-        const delay = Math.random() * 5;
+        const size = Math.random() * 40 + 10;
+        const startX = Math.random() * 100;
+        const duration = Math.random() * 25 + 20;
+        const delay = Math.random() * 15;
         
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
-        particle.style.left = `${startX}px`;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
+        particle.style.left = `${startX}%`;
+        particle.style.animation = `particleFloat ${duration}s linear ${delay}s infinite`;
         
         particlesContainer.appendChild(particle);
     }
+}
+
+// ==========================================
+// CUSTOM CURSOR
+// ==========================================
+function initCustomCursor() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    
+    const cursorDot = document.createElement('div');
+    const cursorOutline = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    cursorOutline.className = 'cursor-outline';
+    document.body.appendChild(cursorDot);
+    document.body.appendChild(cursorOutline);
+    
+    let mouseX = 0, mouseY = 0;
+    let outlineX = 0, outlineY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+    });
+    
+    // Smooth follow for outline
+    function animateOutline() {
+        outlineX += (mouseX - outlineX) * 0.15;
+        outlineY += (mouseY - outlineY) * 0.15;
+        cursorOutline.style.left = outlineX + 'px';
+        cursorOutline.style.top = outlineY + 'px';
+        requestAnimationFrame(animateOutline);
+    }
+    animateOutline();
+    
+    // Hover effects
+    const hoverElements = document.querySelectorAll('a, button, .gallery-item, .event-card, .travel-card, .countdown-box, .nav-link');
+    hoverElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
+    });
+    
+    // Click effect
+    document.addEventListener('mousedown', () => cursorOutline.classList.add('click'));
+    document.addEventListener('mouseup', () => cursorOutline.classList.remove('click'));
+}
+
+// ==========================================
+// MOBILE MENU
+// ==========================================
+function initMobileMenu() {
+    const menuToggle = document.getElementById('mobileMenuToggle');
+    const navContent = document.querySelector('.nav-content');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    if (!menuToggle || !navContent) return;
+    
+    menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navContent.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+    });
+    
+    // Close menu when clicking a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navContent.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        });
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navContent.classList.contains('active')) {
+            menuToggle.classList.remove('active');
+            navContent.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
 }
 
 // ==========================================
@@ -111,15 +205,12 @@ function initNavigation() {
 }
 
 // ==========================================
-// DYNAMIC IMAGE LOADING
+// DYNAMIC IMAGE LOADING (Gallery Only)
 // ==========================================
 function loadImages() {
-    // Define image extensions to try
-    const imageExtensions = ['jpg', 'jpeg', 'png', 'heic', 'HEIC', 'JPG', 'JPEG', 'PNG'];
-    const imageCount = 10; // We have 10 images
-    const loadedImages = [];
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'heic', 'HEIC', 'JPG', 'JPEG', 'PNG', 'webp', 'WEBP'];
+    const imageCount = 10;
     
-    // Function to check if image exists
     async function checkImage(path) {
         try {
             const response = await fetch(path, { method: 'HEAD' });
@@ -129,12 +220,15 @@ function loadImages() {
         }
     }
     
-    // Load images for photo showcase
-    async function loadPhotoShowcase() {
-        const photoGrid = document.getElementById('photoShowcase');
-        if (!photoGrid) return;
+    // Load images for gallery only (removed duplicate photo showcase)
+    async function loadGallery() {
+        const galleryGrid = document.getElementById('galleryGrid');
+        if (!galleryGrid) return;
         
-        const speeds = [0.5, 0.7, 0.6, 0.8, 0.5, 0.7, 0.6, 0.8, 0.5, 0.7];
+        // Add loading state
+        galleryGrid.innerHTML = '<div class="gallery-loading">Loading memories...</div>';
+        
+        const loadedImages = [];
         
         for (let i = 1; i <= imageCount; i++) {
             for (const ext of imageExtensions) {
@@ -142,64 +236,124 @@ function loadImages() {
                 const exists = await checkImage(imagePath);
                 
                 if (exists) {
-                    const photoCard = document.createElement('div');
-                    photoCard.className = 'photo-card';
-                    photoCard.setAttribute('data-speed', speeds[i - 1]);
-                    photoCard.innerHTML = `
-                        <div class="photo-wrapper">
-                            <img src="${imagePath}" alt="Couple photo ${i}" loading="lazy">
-                            <div class="photo-overlay"></div>
-                        </div>
-                    `;
-                    photoGrid.appendChild(photoCard);
                     loadedImages.push(imagePath);
                     break;
                 }
             }
         }
-    }
-    
-    // Load images for gallery
-    async function loadGallery() {
-        const galleryGrid = document.getElementById('galleryGrid');
-        if (!galleryGrid) return;
         
-        for (let i = 1; i <= imageCount; i++) {
-            for (const ext of imageExtensions) {
-                const imagePath = `img/${i}.${ext}`;
-                const exists = await checkImage(imagePath);
-                
-                if (exists) {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = 'gallery-item';
-                    galleryItem.setAttribute('data-category', 'couple');
-                    galleryItem.innerHTML = `
-                        <div class="gallery-image-wrapper">
-                            <img src="${imagePath}" alt="Couple moment ${i}" loading="lazy">
-                            <div class="gallery-overlay">
-                                <div class="gallery-icon">
-                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
-                                </div>
-                            </div>
+        // Clear loading state
+        galleryGrid.innerHTML = '';
+        
+        // Create gallery items with staggered animation
+        loadedImages.forEach((imagePath, index) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.style.transitionDelay = `${index * 0.1}s`;
+            galleryItem.innerHTML = `
+                <div class="gallery-image-wrapper">
+                    <img src="${imagePath}" alt="Our moment ${index + 1}" loading="lazy">
+                    <div class="gallery-overlay">
+                        <div class="gallery-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
                         </div>
-                    `;
-                    galleryGrid.appendChild(galleryItem);
-                    break;
-                }
-            }
-        }
-    }
-    
-    // Load both sections
-    Promise.all([loadPhotoShowcase(), loadGallery()]).then(() => {
-        // Re-initialize scroll animations after images are loaded
+                    </div>
+                </div>
+            `;
+            
+            // Add click to open lightbox (optional enhancement)
+            galleryItem.addEventListener('click', () => {
+                openLightbox(imagePath);
+            });
+            
+            galleryGrid.appendChild(galleryItem);
+        });
+        
+        // Re-initialize scroll animations
         setTimeout(() => {
             initScrollAnimations();
         }, 100);
+    }
+    
+    loadGallery();
+}
+
+// ==========================================
+// LIGHTBOX
+// ==========================================
+function openLightbox(imageSrc) {
+    // Check if lightbox already exists
+    let lightbox = document.getElementById('lightbox');
+    
+    if (!lightbox) {
+        lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.style.cssText = `
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+            padding: 20px;
+        `;
+        lightbox.innerHTML = `
+            <img src="" alt="Full size" style="
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                border-radius: 8px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            ">
+            <button style="
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.2);
+                color: white;
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                cursor: pointer;
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">×</button>
+        `;
+        document.body.appendChild(lightbox);
+        
+        lightbox.addEventListener('click', closeLightbox);
+    }
+    
+    const img = lightbox.querySelector('img');
+    img.src = imageSrc;
+    
+    document.body.style.overflow = 'hidden';
+    lightbox.style.display = 'flex';
+    
+    requestAnimationFrame(() => {
+        lightbox.style.opacity = '1';
     });
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.style.opacity = '0';
+        setTimeout(() => {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = '';
+        }, 300);
+    }
 }
 
 // ==========================================
@@ -470,8 +624,9 @@ function initRSVPForm() {
                     'sangeet': 'Sangeet Night (Feb 5, 6:00 PM)',
                     'talikettu': 'Talikettu Ceremony (Feb 6, 6:00 AM)',
                     'wedding': 'Main Wedding (Feb 6, 10:30 AM)',
-                    'reception-ernakulam': 'Reception - Ernakulam (Feb 8)',
-                    'reception-thane': 'Reception - Thane (Feb 14)'
+                    'reception-ernakulam': 'Reception - Ernakulam (Feb 8, 6:30 PM)',
+                    'reception-thane': 'Reception - Thane (Feb 14)',
+                    'reception-qatar': 'Reception - Qatar (Feb 19)'
                 };
                 return `  - ${eventNames[event] || event}`;
             }).join('\n');
@@ -602,27 +757,167 @@ function initScrollToTop() {
 }
 
 // ==========================================
+// CALENDAR ICS DOWNLOAD
+// ==========================================
+function initCalendarDownload() {
+    const downloadBtn = document.getElementById('downloadCalendar');
+    if (!downloadBtn) return;
+    
+    downloadBtn.addEventListener('click', generateICS);
+}
+
+function generateICS() {
+    const events = [
+        {
+            title: 'Kavya & Kiran - Haldi Ceremony',
+            start: '20260205T103000',
+            end: '20260205T140000',
+            location: 'The Habitat Suites, Guruvayur',
+            description: 'Haldi Ceremony - Dress Code: Yellow'
+        },
+        {
+            title: 'Kavya & Kiran - Sangeet Night',
+            start: '20260205T180000',
+            end: '20260205T230000',
+            location: 'The Habitat Suites, Guruvayur',
+            description: 'Sangeet Night - Dress Code: Shimmery or Glittery'
+        },
+        {
+            title: 'Kavya & Kiran - Talikettu Ceremony',
+            start: '20260206T060000',
+            end: '20260206T090000',
+            location: 'Guruvayur Shri Krishna Temple',
+            description: 'Talikettu Ceremony - Dress Code: Comfortable attire'
+        },
+        {
+            title: 'Kavya & Kiran - Main Wedding Ceremony',
+            start: '20260206T103000',
+            end: '20260206T150000',
+            location: 'Krishna Inn, Guruvayur',
+            description: 'Main Wedding Ceremony - Dress Code: Traditional outfits'
+        },
+        {
+            title: 'Kavya & Kiran - Reception (Ernakulam)',
+            start: '20260208T183000',
+            end: '20260208T230000',
+            location: 'Njattumkalayil Hilltop, Ernakulam',
+            description: 'Wedding Reception at Ernakulam'
+        },
+        {
+            title: 'Kavya & Kiran - Reception (Thane)',
+            start: '20260214T180000',
+            end: '20260214T230000',
+            location: 'Mahaveer Premium Banquet, Thane',
+            description: 'Wedding Reception - Valentines Day Special'
+        },
+        {
+            title: 'Kavya & Kiran - Reception (Qatar)',
+            start: '20260219T180000',
+            end: '20260219T230000',
+            location: 'Al Waha Club, Qatar',
+            description: 'Wedding Reception in Qatar'
+        }
+    ];
+    
+    let icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Kavya & Kiran Wedding//EN',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'X-WR-CALNAME:Kavya & Kiran Wedding Events'
+    ];
+    
+    events.forEach((event, index) => {
+        const uid = `kavya-kiran-wedding-${index + 1}@wedding2026.com`;
+        const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+        
+        icsContent.push(
+            'BEGIN:VEVENT',
+            `UID:${uid}`,
+            `DTSTAMP:${now}`,
+            `DTSTART:${event.start}`,
+            `DTEND:${event.end}`,
+            `SUMMARY:${event.title}`,
+            `DESCRIPTION:${event.description}`,
+            `LOCATION:${event.location}`,
+            'STATUS:CONFIRMED',
+            'BEGIN:VALARM',
+            'TRIGGER:-P1D',
+            'ACTION:DISPLAY',
+            `DESCRIPTION:Reminder: ${event.title} tomorrow!`,
+            'END:VALARM',
+            'END:VEVENT'
+        );
+    });
+    
+    icsContent.push('END:VCALENDAR');
+    
+    const blob = new Blob([icsContent.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Kavya-Kiran-Wedding-Events.ics';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+    
+    // Show success feedback
+    const btn = document.getElementById('downloadCalendar');
+    const originalText = btn.querySelector('span').textContent;
+    btn.querySelector('span').textContent = 'Downloaded!';
+    btn.style.background = 'linear-gradient(135deg, #2C5F4F 0%, #1A3A32 100%)';
+    btn.style.borderColor = '#2C5F4F';
+    btn.style.color = 'white';
+    
+    setTimeout(() => {
+        btn.querySelector('span').textContent = originalText;
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+    }, 2000);
+}
+
+// ==========================================
 // INITIALIZE ALL
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Load images first
-    loadImages();
-    
-    // Initialize other features
+    // Show page immediately
+    document.body.classList.add('loaded');
+
+    // Initialize core features
     initCountdown();
-    createParticles();
+    initMobileMenu();
     initNavigation();
     initMusicToggle();
-    initLazyLoading();
-    initPageLoad();
-    initCursorEffect();
-    initRSVPForm();
     initScrollToTop();
+    initRSVPForm();
+    initCalendarDownload();
     
-    // Initialize parallax after a short delay to ensure images are loaded
-    setTimeout(() => {
-        initParallax();
-    }, 500);
+    // Initialize visual effects (deferred for performance)
+    requestAnimationFrame(() => {
+        createParticles();
+        initScrollAnimations();
+    });
+    
+    // Load images
+    loadImages();
+    
+    // Initialize custom cursor on desktop
+    if (window.innerWidth > 1024 && window.matchMedia('(hover: hover)').matches) {
+        initCustomCursor();
+    }
+    
+    // Add intersection observer for section subtitles
+    const subtitles = document.querySelectorAll('.section-subtitle');
+    const subtitleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.3 });
+    subtitles.forEach(el => subtitleObserver.observe(el));
 });
 
 // ==========================================
