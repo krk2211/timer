@@ -807,9 +807,9 @@ function generateICS() {
             start: '20260219T180000',
             end: '20260219T230000',
             location: 'Al Waha Club, Qatar',
-            locationUrl: 'https://maps.app.goo.gl/HvMV23v7J3LhRH8z7',
+            locationUrl: 'https://maps.app.goo.gl/gWVYKhur237PiQid9',
             description: 'Wedding Reception - Qatar\nVenue: Al Waha Club, Qatar\nDate: 19th February 2026',
-            fullDescription: 'Wedding Reception - Qatar\nDate: 19th February 2026\nTime: 6:00 PM onwards\nLocation: Al Waha Club, Qatar\nJoin us for celebration in Qatar!'
+            fullDescription: 'Wedding Reception - Qatar\nDate: 19th February 2026\nTime: 6:00 PM onwards\nLocation: Al Waha Club, Qatar\nJoin us for celebration in Qatar!\nLocation Map: https://maps.app.goo.gl/gWVYKhur237PiQid9'
         }
     ];
     
