@@ -590,14 +590,14 @@ function initCursorEffect() {
 }
 
 // ==========================================
-// RSVP FORM HANDLING
+// RSVP FORM HANDLING VIA SERVERLESS WORKER
 // ==========================================
 function initRSVPForm() {
     const form = document.getElementById('rsvpForm');
     const successMessage = document.getElementById('rsvpSuccess');
     
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             // Get form data
@@ -617,51 +617,25 @@ function initRSVPForm() {
                 return;
             }
             
-            // Format events list
-            const eventsList = data.events.map(event => {
-                const eventNames = {
-                    'haldi': 'Haldi Ceremony (Feb 5, 10:30 AM)',
-                    'sangeet': 'Sangeet Night (Feb 5, 6:00 PM)',
-                    'talikettu': 'Talikettu Ceremony (Feb 6, 6:00 AM)',
-                    'wedding': 'Main Wedding (Feb 6, 10:30 AM)',
-                    'reception-ernakulam': 'Reception - Ernakulam (Feb 8, 6:30 PM)',
-                    'reception-thane': 'Reception - Thane (Feb 14)',
-                    'reception-qatar': 'Reception - Qatar (Feb 19)'
-                };
-                return `  - ${eventNames[event] || event}`;
-            }).join('\n');
+            // Disable submit button and show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Submitting...</span>';
             
-            // Create email body with structured format for easy parsing
-            const emailBody = `WEDDING RSVP SUBMISSION
-========================================
-
-GUEST INFORMATION:
-------------------
-Name: ${data.name}
-Email: ${data.email}
-Phone: ${data.phone}
-Number of Guests: ${data.guests}
-
-EVENTS ATTENDING:
------------------
-${eventsList}
-
-SPECIAL MESSAGE:
-----------------
-${data.message}
-
-========================================
-Submitted on: ${new Date().toLocaleString()}
-========================================`;
-            
-            // Create mailto link
-            const mailtoLink = `mailto:krk2211@icloud.com?subject=Wedding RSVP - ${encodeURIComponent(data.name)}&body=${encodeURIComponent(emailBody)}`;
-            
-            // Open mail client
-            window.location.href = mailtoLink;
-            
-            // Show success message with animation
-            setTimeout(() => {
+            try {
+                // Send to serverless worker (keys are hidden server-side)
+                const response = await fetch(window.RSVP_WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to submit');
+                }
+                
+                // Show success message with animation
                 form.style.opacity = '0';
                 form.style.transform = 'translateY(-20px)';
                 
@@ -680,7 +654,13 @@ Submitted on: ${new Date().toLocaleString()}
                         createConfetti();
                     }, 50);
                 }, 300);
-            }, 500);
+                
+            } catch (error) {
+                console.error('Error submitting RSVP:', error);
+                alert('There was an error submitting your RSVP. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         });
     }
 }

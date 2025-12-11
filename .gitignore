@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Wrangler build files
+.wrangler/
+dist/
+
+# Wrangler config (keep actual file local; commit the .example instead)
+worker/wrangler.toml
+
+# Logs
+*.log
+npm-debug.log*
+wrangler.log
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
