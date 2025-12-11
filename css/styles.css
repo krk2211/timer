@@ -251,12 +251,50 @@ body.menu-open { overflow: hidden; }
 .checkbox-group { display: flex; flex-direction: column; gap: 12px; }
 .checkbox-label { display: flex; align-items: center; gap: 14px; font-family: var(--font-sans); font-size: 14px; color: var(--charcoal); cursor: pointer; padding: 14px 18px; border-radius: var(--radius-sm); border: 1px solid transparent; transition: all 0.3s var(--ease-smooth); }
 .checkbox-label:hover { background: var(--gold-subtle); border-color: var(--glass-border); transform: translateX(4px); }
-.checkbox-label input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; accent-color: var(--gold); appearance: none; -webkit-appearance: none; -moz-appearance: none; background: white; border: 2px solid var(--gold); border-radius: 6px; position: relative; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.checkbox-label input[type="checkbox"]:hover { border-color: var(--gold-light); box-shadow: 0 0 12px var(--gold-glow); }
-.checkbox-label input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold-dark); }
-.checkbox-label input[type="checkbox"]:checked::after { content: '✓'; color: white; font-weight: bold; font-size: 14px; }
-.checkbox-label input[type="checkbox"]:focus { outline: none; box-shadow: 0 0 0 3px var(--gold-subtle); }
-.checkbox-label:has(input[type="checkbox"]:checked) { background: var(--gold-subtle); border-color: var(--gold); }
+.checkbox-label input[type="checkbox"] { 
+    width: 22px; 
+    height: 22px; 
+    cursor: pointer; 
+    appearance: none; 
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    background: white; 
+    border: 2px solid var(--gold); 
+    border-radius: 6px; 
+    transition: all 0.3s ease; 
+    flex-shrink: 0;
+    position: relative;
+    accent-color: var(--gold);
+}
+.checkbox-label input[type="checkbox"]:hover { 
+    border-color: var(--gold-light); 
+    box-shadow: 0 0 12px var(--gold-glow); 
+}
+.checkbox-label input[type="checkbox"]:checked { 
+    background: var(--gold); 
+    border-color: var(--gold-dark); 
+}
+.checkbox-label input[type="checkbox"]:checked::after { 
+    content: '✓'; 
+    position: absolute;
+    color: white; 
+    font-weight: bold; 
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.checkbox-label input[type="checkbox"]:focus { 
+    outline: none; 
+    box-shadow: 0 0 0 3px var(--gold-subtle); 
+}
+.checkbox-label:has(input[type="checkbox"]:checked) { 
+    background: var(--gold-subtle); 
+    border-color: var(--gold); 
+}
 .rsvp-submit-btn { margin-top: 20px; padding: 20px 48px; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%); background-size: 200% 200%; border: none; border-radius: var(--radius-full); font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.5s var(--ease-spring); box-shadow: 0 12px 40px var(--gold-glow); animation: btnShimmer 3s ease infinite; }
 @keyframes btnShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 .rsvp-submit-btn:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 20px 60px var(--gold-glow), var(--neon-gold); }
@@ -298,9 +336,9 @@ body.menu-open { overflow: hidden; }
     .mobile-menu-toggle { display: flex; }
     .nav-bar { padding: 0; background: transparent; pointer-events: none; }
     .nav-bar.scrolled { background: transparent; backdrop-filter: none; border: none; }
-    .nav-content { position: fixed; inset: 0; flex-direction: column; justify-content: center; align-items: center; gap: 40px; padding: 60px; background: var(--glass-bg-solid); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-radius: 0; opacity: 0; visibility: hidden; transform: translateY(-20px); transition: all 0.5s var(--ease-out-expo); pointer-events: auto; z-index: 1001; }
-    .nav-content.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 1001; }
-    .nav-link { font-size: 20px; letter-spacing: 4px; }
+    .nav-content { display: flex; position: fixed; inset: 0; flex-direction: column; justify-content: center; align-items: center; gap: 40px; padding: 60px; background: var(--glass-bg-solid); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-radius: 0; opacity: 0; visibility: hidden; transform: translateY(-20px); transition: all 0.5s var(--ease-out-expo); pointer-events: none; z-index: 1001; }
+    .nav-content.active { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; z-index: 1001; }
+    .nav-link { font-size: 20px; letter-spacing: 4px; pointer-events: auto; }
     .music-toggle { top: 20px; right: 20px; width: 52px; height: 52px; }
     .hero-title { flex-direction: column; gap: 0.05em; }
     .name-ampersand { font-size: 0.35em; }
