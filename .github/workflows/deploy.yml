@@ -28,6 +28,11 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+          exclude: |
+            worker/**
+            **/wrangler.toml
+            **/wrangler.json
+            **/wrangler.jsonc
 
   deploy:
     environment:
