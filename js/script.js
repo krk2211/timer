@@ -749,53 +749,67 @@ function initCalendarDownload() {
 function generateICS() {
     const events = [
         {
-            title: 'Kavya & Kiran - Haldi Ceremony',
+            title: 'Haldi Ceremony - Kavya & Kiran',
             start: '20260205T103000',
             end: '20260205T140000',
             location: 'The Habitat Suites, Guruvayur',
-            description: 'Haldi Ceremony - Dress Code: Yellow'
+            locationUrl: 'https://maps.app.goo.gl/H2yd7WQfzg7uE2s76',
+            description: 'Haldi Ceremony - A joyful haldi ceremony filled with vibrant, playful vibes and traditional blessings.\nDress Code: Yellow\nVenue: The Habitat Suites, Guruvayur',
+            fullDescription: 'Haldi Ceremony\nDate: 5th February 2026\nTime: 10:30 AM\nLocation: The Habitat Suites, Guruvayur\nDress Code: Yellow\nA joyful haldi ceremony filled with vibrant, playful vibes and traditional blessings.\nLocation Map: https://maps.app.goo.gl/H2yd7WQfzg7uE2s76'
         },
         {
-            title: 'Kavya & Kiran - Sangeet Night',
+            title: 'Sangeet Night - Kavya & Kiran',
             start: '20260205T180000',
             end: '20260205T230000',
             location: 'The Habitat Suites, Guruvayur',
-            description: 'Sangeet Night - Dress Code: Shimmery or Glittery'
+            locationUrl: 'https://maps.app.goo.gl/H2yd7WQfzg7uE2s76',
+            description: 'Sangeet Night - A musical night full of performances, dance, and celebration under the stars.\nDress Code: Shimmery or Glittery\nVenue: The Habitat Suites, Guruvayur',
+            fullDescription: 'Sangeet Night\nDate: 5th February 2026\nTime: 6:00 PM onwards\nLocation: The Habitat Suites, Guruvayur\nDress Code: Shimmery or Glittery\nA musical night full of performances, dance, and celebration under the stars.\nLocation Map: https://maps.app.goo.gl/H2yd7WQfzg7uE2s76'
         },
         {
-            title: 'Kavya & Kiran - Talikettu Ceremony',
+            title: 'Talikettu Ceremony - Kavya & Kiran',
             start: '20260206T060000',
             end: '20260206T090000',
             location: 'Guruvayur Shri Krishna Temple',
-            description: 'Talikettu Ceremony - Dress Code: Comfortable attire'
+            locationUrl: 'https://maps.app.goo.gl/cVcWGRryNKU64AP56',
+            description: 'Talikettu Ceremony - A sacred morning ceremony at the blessed Guruvayur Temple.\nDress Code: Comfortable attire\nVenue: Guruvayur Shri Krishna Temple',
+            fullDescription: 'Talikettu Ceremony\nDate: 6th February 2026\nTime: 6:00 AM\nLocation: Guruvayur Shri Krishna Temple\nDress Code: Comfortable attire\nA sacred morning ceremony at the blessed Guruvayur Temple.\nLocation Map: https://maps.app.goo.gl/cVcWGRryNKU64AP56'
         },
         {
-            title: 'Kavya & Kiran - Main Wedding Ceremony',
+            title: 'Main Wedding Ceremony - Kavya & Kiran',
             start: '20260206T103000',
             end: '20260206T150000',
             location: 'Krishna Inn, Guruvayur',
-            description: 'Main Wedding Ceremony - Dress Code: Traditional outfits'
+            locationUrl: 'https://maps.app.goo.gl/T3shaX5dg3RadJMo8',
+            description: 'Main Wedding Ceremony - The moment we\'ve been waiting for - our sacred union in the presence of family and friends.\nDress Code: Traditional outfits\nVenue: Krishna Inn',
+            fullDescription: 'Main Wedding Ceremony\nDate: 6th February 2026\nTime: 10:30 AM onwards\nLocation: Krishna Inn, Guruvayur\nDress Code: Traditional outfits\nThe moment we\'ve been waiting for - our sacred union in the presence of family and friends.\nLocation Map: https://maps.app.goo.gl/T3shaX5dg3RadJMo8'
         },
         {
-            title: 'Kavya & Kiran - Reception (Ernakulam)',
+            title: 'Wedding Reception (Ernakulam) - Kavya & Kiran',
             start: '20260208T183000',
             end: '20260208T230000',
             location: 'Njattumkalayil Hilltop, Ernakulam',
-            description: 'Wedding Reception at Ernakulam'
+            locationUrl: 'https://maps.app.goo.gl/HvMV23v7J3LhRH8z7',
+            description: 'Wedding Reception - Join us for an elegant evening of celebration, dining, and dancing at the scenic hilltop venue.\nVenue: Njattumkalayil Hilltop, Ernakulam',
+            fullDescription: 'Wedding Reception - Ernakulam\nDate: 8th February 2026\nTime: 6:30 PM onwards\nLocation: Njattumkalayil Hilltop, Ernakulam\nJoin us for an elegant evening of celebration, dining, and dancing at the scenic hilltop venue.\nLocation Map: https://maps.app.goo.gl/HvMV23v7J3LhRH8z7'
         },
         {
-            title: 'Kavya & Kiran - Reception (Thane)',
+            title: 'Wedding Reception (Thane) - Kavya & Kiran',
             start: '20260214T180000',
             end: '20260214T230000',
             location: 'Mahaveer Premium Banquet, Thane',
-            description: 'Wedding Reception - Valentines Day Special'
+            locationUrl: 'https://maps.app.goo.gl/tWFqhK74onAKhXSD6',
+            description: 'Wedding Reception - Valentine\'s Day Special\nVenue: Mahaveer Premium Banquet, Thane\nDate: 14th February 2026 - Valentine\'s Day',
+            fullDescription: 'Wedding Reception - Thane (Valentine\'s Day)\nDate: 14th February 2026\nTime: 6:00 PM onwards\nLocation: Mahaveer Premium Banquet, Thane\nCelebrating love on Valentine\'s Day!\nLocation Map: https://maps.app.goo.gl/tWFqhK74onAKhXSD6'
         },
         {
-            title: 'Kavya & Kiran - Reception (Qatar)',
+            title: 'Wedding Reception (Qatar) - Kavya & Kiran',
             start: '20260219T180000',
             end: '20260219T230000',
             location: 'Al Waha Club, Qatar',
-            description: 'Wedding Reception in Qatar'
+            locationUrl: 'https://maps.app.goo.gl/HvMV23v7J3LhRH8z7',
+            description: 'Wedding Reception - Qatar\nVenue: Al Waha Club, Qatar\nDate: 19th February 2026',
+            fullDescription: 'Wedding Reception - Qatar\nDate: 19th February 2026\nTime: 6:00 PM onwards\nLocation: Al Waha Club, Qatar\nJoin us for celebration in Qatar!'
         }
     ];
     
@@ -805,7 +819,9 @@ function generateICS() {
         'PRODID:-//Kavya & Kiran Wedding//EN',
         'CALSCALE:GREGORIAN',
         'METHOD:PUBLISH',
-        'X-WR-CALNAME:Kavya & Kiran Wedding Events'
+        'X-WR-CALNAME:Kavya & Kiran Wedding Events',
+        'X-WR-TIMEZONE:Asia/Kolkata',
+        'X-WR-CALDESC:Wedding events for Kavya & Kiran - February 2026'
     ];
     
     events.forEach((event, index) => {
@@ -819,9 +835,11 @@ function generateICS() {
             `DTSTART:${event.start}`,
             `DTEND:${event.end}`,
             `SUMMARY:${event.title}`,
-            `DESCRIPTION:${event.description}`,
             `LOCATION:${event.location}`,
+            `DESCRIPTION:${event.fullDescription}`,
+            `URL:${event.locationUrl}`,
             'STATUS:CONFIRMED',
+            'SEQUENCE:0',
             'BEGIN:VALARM',
             'TRIGGER:-P1D',
             'ACTION:DISPLAY',
@@ -848,6 +866,14 @@ function generateICS() {
     btn.querySelector('span').textContent = 'Downloaded!';
     btn.style.background = 'linear-gradient(135deg, #2C5F4F 0%, #1A3A32 100%)';
     btn.style.borderColor = '#2C5F4F';
+    btn.style.color = 'white';
+    
+    setTimeout(() => {
+        btn.querySelector('span').textContent = originalText;
+        btn.style.background = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+    }, 2000);
     btn.style.color = 'white';
     
     setTimeout(() => {
