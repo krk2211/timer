@@ -763,8 +763,8 @@ function generateICS() {
             end: '20260205T230000',
             location: 'The Habitat Suites, Guruvayur',
             locationUrl: 'https://maps.app.goo.gl/H2yd7WQfzg7uE2s76',
-            description: 'Sangeet Night - A musical night full of performances, dance, and celebration under the stars.\nDress Code: Shimmery or Glittery\nVenue: The Habitat Suites, Guruvayur',
-            fullDescription: 'Sangeet Night\nDate: 5th February 2026\nTime: 6:00 PM onwards\nLocation: The Habitat Suites, Guruvayur\nDress Code: Shimmery or Glittery\nA musical night full of performances, dance, and celebration under the stars.\nLocation Map: https://maps.app.goo.gl/H2yd7WQfzg7uE2s76'
+            description: 'Sangeet Night - A musical night full of performances, dance, and celebration under the stars.\nDress Code: Sparkle and Shine\nVenue: The Habitat Suites, Guruvayur',
+            fullDescription: 'Sangeet Night\nDate: 5th February 2026\nTime: 6:00 PM onwards\nLocation: The Habitat Suites, Guruvayur\nDress Code: Sparkle and Shine\nA musical night full of performances, dance, and celebration under the stars.\nLocation Map: https://maps.app.goo.gl/H2yd7WQfzg7uE2s76'
         },
         {
             title: 'Talikettu Ceremony - Kavya & Kiran',
